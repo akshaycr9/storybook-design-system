@@ -1,10 +1,13 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+import UserPlaceholderImage from '../../assets/user-avatar-placeholder.svg';
+import CompanyPlaceholderImage from '../../assets/company-avatar-placeholder.svg';
 
 interface AvatarProps {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
   src: string;
   isFocused?: boolean;
+  type: 'user' | 'company';
 }
 
 export const sizes = {
@@ -72,8 +75,15 @@ const Image = styled.img<AvatarProps>`
     css`
       border: 4px solid #cbcbf4;
     `}
+
+    ${(props) =>
+    props.type === 'company' &&
+    css`
+      border-radius: 4px;
+    `}
 `;
 
-export function Avatar({ size, src, isFocused }: AvatarProps) {
-  return <Image size={size} src={src} isFocused={isFocused} alt='avatar' />;
+export function Avatar({ size = 'md', src, isFocused = false, type }: AvatarProps) {
+  const image = !src ? (type === 'user' ? UserPlaceholderImage : CompanyPlaceholderImage) : src;
+  return <Image type={type} size={size} src={image} isFocused={isFocused} alt='avatar' />;
 }
